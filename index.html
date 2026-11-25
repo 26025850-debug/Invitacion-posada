@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gran Posada e Inauguración | Invitación Oficial</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cormorant Garamond (Serif elegante) + Plus Jakarta Sans (Limpia y moderna) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        emeraldDeep: '#071F19',
+                        emeraldCard: '#0C2D25',
+                        goldChampagne: '#E5C17B',
+                        goldRich: '#C59B48',
+                        burgundyWine: '#5E1924',
+                        ivoryWarm: '#FAF6EE',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Fondo y texturas sutiles */
+        body {
+            background-color: #071F19;
+            color: #FAF6EE;
+            overflow-x: hidden;
+        }
+
+        .bg-festive-radial {
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(197, 155, 72, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 85% 25%, rgba(94, 25, 36, 0.28) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(197, 155, 72, 0.10) 0%, transparent 55%),
+                #071F19;
+        }
+
+        /* Efecto cristal elegante (Glassmorphism) */
+        .glass-card {
+            background: rgba(12, 45, 37, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(229, 193, 123, 0.22);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+        }
+
+        /* Degradado dorado para texto */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #F6E2B3 0%, #D8AE5E 50%, #F3D999 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Botón dorado brillante */
+        .btn-gold {
+            background: linear-gradient(135deg, #DFB868 0%, #B88B38 100%);
+            color: #071F19;
+            box-shadow: 0 8px 25px rgba(197, 155, 72, 0.35);
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(229, 193, 123, 0.5);
+            filter: brightness(1.06);
+        }
+
+        /* Botón WhatsApp festivo */
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #16A34A 100%);
+            color: #FFFFFF;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.45);
+            filter: brightness(1.05);
+        }
+
+        /* Canvas de partículas doradas */
+        #sparkle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="bg-festive-radial font-sans antialiased selection:bg-goldChampagne selection:text-emeraldDeep">
+
+    <!-- =====================================================================
+         CONFIGURACIÓN RÁPIDA DEL EVENTO (EDITA ESTOS VALORES SI LO DESEAS)
+         También puedes editarlos visualmente dando clic en el botón del engrane
+         en la esquina superior derecha.
+    ====================================================================== -->
+    <script>
+        const DEFAULT_EVENT_CONFIG = {
+            // Nombre de la empresa, proyecto o lugar que se inaugura
+            brandName: "NUESTRA NUEVA SEDE",
+            // Subtítulo o mensaje de bienvenida corto
+            subtitle: "Celebremos juntos el inicio de una nueva etapa y el espíritu de estas fiestas.",
+            // Dirección visible en la tarjeta
+            addressText: "Saltillo, Coahuila, México",
+            // Enlace directo de Google Maps (puedes pegar aquí tu link de maps.app.goo.gl o búsqueda)
+            googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Saltillo+Coahuila",
+            // Número de WhatsApp a 10 dígitos o con lada 52 (sin espacios ni símbolos)
+            whatsappNumber: "528441833479",
+            // Mensaje exacto solicitado por el usuario
+            whatsappBaseMessage: "confirmo mi asistencia"
+        };
+    </script>
+
+    <!-- Canvas de destellos dorados sutiles -->
+    <canvas id="sparkle-canvas"></canvas>
+
+    <!-- Botón flotante discreto para personalizar datos al instante -->
+    <button id="open-config-btn" title="Personalizar datos de la invitación"
+        class="fixed top-4 right-4 z-40 p-2.5 rounded-full glass-card text-goldChampagne/80 hover:text-goldChampagne hover:scale-105 transition-all shadow-lg flex items-center gap-2 text-xs">
+        <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
+        <span class="hidden sm:inline font-medium">Personalizar</span>
+    </button>
+
+    <!-- Contenido Principal -->
+    <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-10 sm:py-16">
+        
+        <!-- Tarjeta Principal de Invitación -->
+        <article class="w-full max-w-2xl glass-card rounded-3xl p-6 sm:p-12 text-center relative overflow-hidden">
+            
+            <!-- Esquinas decorativas doradas -->
+            <div class="absolute top-3 left-3 w-8 h-8 border-t-2 border-l-2 border-goldChampagne/40 rounded-tl-xl pointer-events-none"></div>
+            <div class="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-goldChampagne/40 rounded-tr-xl pointer-events-none"></div>
+            <div class="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-goldChampagne/40 rounded-bl-xl pointer-events-none"></div>
+            <div class="absolute bottom-3 right-3 w-8 h-8 border-b-2 border-r-2 border-goldChampagne/40 rounded-br-xl pointer-events-none"></div>
+
+            <!-- Emblema Superior / Ribbon -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-burgundyWine/70 border border-goldChampagne/30 text-goldChampagne text-xs sm:text-sm tracking-[0.2em] uppercase font-semibold mb-6 animate-float">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-goldChampagne"></i>
+                <span>Estás Cordialmente Invitado</span>
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-goldChampagne"></i>
+            </div>
+
+            <!-- Nombre de la Empresa / Lugar (Editable) -->
+            <p id="display-brand" class="text-goldChampagne tracking-[0.28em] uppercase text-xs sm:text-sm font-semibold mb-2">
+                NUESTRA NUEVA SEDE
+            </p>
+
+            <!-- Título Principal -->
+            <h1 class="font-serif text-4xl sm:text-6xl font-bold leading-tight text-gold-gradient mb-4">
+                Gran Posada <br class="sm:hidden" />
+                <span class="italic font-normal text-ivoryWarm">&amp;</span> Inauguración
+            </h1>
+
+            <!-- Divisor ornamental -->
+            <div class="flex items-center justify-center gap-3 my-5">
+                <span class="h-[1px] w-14 sm:w-24 bg-gradient-to-r from-transparent to-goldChampagne/60"></span>
+                <i data-lucide="star" class="w-4 h-4 text-goldChampagne fill-goldChampagne/40"></i>
+                <span class="h-[1px] w-14 sm:w-24 bg-gradient-to-l from-transparent to-goldChampagne/60"></span>
+            </div>
+
+            <!-- Subtítulo / Mensaje cálido -->
+            <p id="display-subtitle" class="text-ivoryWarm/85 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-8 font-light">
+                Celebremos juntos el inicio de una nueva etapa y el espíritu de estas fiestas.
+            </p>
+
+            <!-- Bloque Destacado de Fecha y Hora -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                <!-- Fecha -->
+                <div class="rounded-2xl bg-emeraldDeep/70 border border-goldChampagne/25 p-5 flex flex-col items-center justify-center">
+                    <div class="w-10 h-10 rounded-full bg-goldChampagne/15 flex items-center justify-center text-goldChampagne mb-2.5">
+                        <i data-lucide="calendar-heart" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs uppercase tracking-[0.2em] text-goldChampagne/80 font-medium">Fecha</span>
+                    <p class="font-serif text-2xl sm:text-3xl font-semibold text-ivoryWarm mt-0.5">Sábado 28 de Noviembre</p>
+                    <span class="text-xs text-ivoryWarm/60 mt-0.5">2026</span>
+                </div>
+
+                <!-- Hora -->
+                <div class="rounded-2xl bg-emeraldDeep/70 border border-goldChampagne/25 p-5 flex flex-col items-center justify-center">
+                    <div class="w-10 h-10 rounded-full bg-goldChampagne/15 flex items-center justify-center text-goldChampagne mb-2.5">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs uppercase tracking-[0.2em] text-goldChampagne/80 font-medium">Recepción</span>
+                    <p class="font-serif text-2xl sm:text-3xl font-semibold text-ivoryWarm mt-0.5">7:00 PM</p>
+                    <span class="text-xs text-ivoryWarm/60 mt-0.5">19:00 hrs • Puntual</span>
+                </div>
+            </div>
+
+            <!-- Cuenta Regresiva en Tiempo Real -->
+            <div class="mb-9">
+                <p id="countdown-label" class="text-xs uppercase tracking-[0.22em] text-goldChampagne/90 mb-3 font-medium">
+                    Falta muy poco para celebrar
+                </p>
+                <div id="countdown-grid" class="grid grid-cols-4 gap-2 sm:gap-4 max-w-md mx-auto">
+                    <div class="rounded-xl bg-burgundyWine/40 border border-goldChampagne/20 py-3 px-2">
+                        <span id="cd-days" class="block font-serif text-2xl sm:text-3xl font-bold text-goldChampagne">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-wider text-ivoryWarm/75">Días</span>
+                    </div>
+                    <div class="rounded-xl bg-burgundyWine/40 border border-goldChampagne/20 py-3 px-2">
+                        <span id="cd-hours" class="block font-serif text-2xl sm:text-3xl font-bold text-goldChampagne">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-wider text-ivoryWarm/75">Horas</span>
+                    </div>
+                    <div class="rounded-xl bg-burgundyWine/40 border border-goldChampagne/20 py-3 px-2">
+                        <span id="cd-minutes" class="block font-serif text-2xl sm:text-3xl font-bold text-goldChampagne">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-wider text-ivoryWarm/75">Min</span>
+                    </div>
+                    <div class="rounded-xl bg-burgundyWine/40 border border-goldChampagne/20 py-3 px-2">
+                        <span id="cd-seconds" class="block font-serif text-2xl sm:text-3xl font-bold text-goldChampagne">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-wider text-ivoryWarm/75">Seg</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Ubicación con Botón a Google Maps -->
+            <div class="rounded-2xl bg-emeraldDeep/60 border border-goldChampagne/20 p-5 sm:p-6 mb-8">
+                <div class="flex items-center justify-center gap-2 text-goldChampagne mb-1.5">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    <h2 class="font-serif text-xl sm:text-2xl font-semibold">Ubicación del Evento</h2>
+                </div>
+                <p id="display-address" class="text-sm sm:text-base text-ivoryWarm/85 mb-4">
+                    Saltillo, Coahuila, México
+                </p>
+                <a id="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Saltillo+Coahuila" target="_blank" rel="noopener noreferrer"
+                   class="btn-gold inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-sm sm:text-base">
+                    <i data-lucide="navigation" class="w-4 h-4"></i>
+                    <span>Ver ubicación en Google Maps</span>
+                </a>
+            </div>
+
+            <!-- Sección Discreta de Itinerario Sugerido -->
+            <div class="mb-9 text-left">
+                <div class="text-center mb-5">
+                    <span class="text-xs uppercase tracking-[0.22em] text-goldChampagne/80">Programa de la Noche</span>
+                    <h3 class="font-serif text-2xl sm:text-3xl font-semibold text-ivoryWarm mt-0.5">Itinerario</h3>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Item 1 -->
+                    <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-emeraldDeep/45 border border-goldChampagne/15">
+                        <div class="p-2 rounded-lg bg-goldChampagne/15 text-goldChampagne shrink-0 mt-0.5">
+                            <i data-lucide="scissors" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-goldChampagne">7:00 PM</span>
+                            <h4 class="text-sm font-semibold text-ivoryWarm">Bienvenida y Corte de Listón</h4>
+                            <p class="text-xs text-ivoryWarm/70 mt-0.5">Recepción de invitados y apertura oficial.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-emeraldDeep/45 border border-goldChampagne/15">
+                        <div class="p-2 rounded-lg bg-goldChampagne/15 text-goldChampagne shrink-0 mt-0.5">
+                            <i data-lucide="wine" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-goldChampagne">8:00 PM</span>
+                            <h4 class="text-sm font-semibold text-ivoryWarm">Brindis de Inauguración</h4>
+                            <p class="text-xs text-ivoryWarm/70 mt-0.5">Palabras de agradecimiento y brindis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-emeraldDeep/45 border border-goldChampagne/15">
+                        <div class="p-2 rounded-lg bg-goldChampagne/15 text-goldChampagne shrink-0 mt-0.5">
+                            <i data-lucide="utensils" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-goldChampagne">8:45 PM</span>
+                            <h4 class="text-sm font-semibold text-ivoryWarm">Cena y Posada Tradicional</h4>
+                            <p class="text-xs text-ivoryWarm/70 mt-0.5">Banquete navideño, ponche y convivencia.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="flex items-start gap-3.5 p-3.5 rounded-xl bg-emeraldDeep/45 border border-goldChampagne/15">
+                        <div class="p-2 rounded-lg bg-goldChampagne/15 text-goldChampagne shrink-0 mt-0.5">
+                            <i data-lucide="music" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-goldChampagne">10:00 PM</span>
+                            <h4 class="text-sm font-semibold text-ivoryWarm">Música y Celebración</h4>
+                            <p class="text-xs text-ivoryWarm/70 mt-0.5">Ambiente festivo para cerrar la noche.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Confirmación de Asistencia (WhatsApp RSVP) -->
+            <div class="rounded-2xl bg-gradient-to-b from-burgundyWine/45 to-emeraldDeep/80 border border-goldChampagne/30 p-6 sm:p-7">
+                <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-ivoryWarm mb-1.5">
+                    Confirma tu Asistencia
+                </h2>
+                <p class="text-xs sm:text-sm text-ivoryWarm/80 mb-5 max-w-md mx-auto">
+                    Tu presencia hará aún más especial esta noche. Confírmanos con un clic vía WhatsApp.
+                </p>
+
+                <!-- Campo opcional para que el invitado agregue su nombre -->
+                <div class="max-w-sm mx-auto mb-4">
+                    <label for="guest-name-input" class="sr-only">Tu nombre (opcional)</label>
+                    <input type="text" id="guest-name-input" placeholder="Escribe tu nombre (opcional)"
+                        class="w-full px-4 py-2.5 rounded-xl bg-emeraldDeep/80 border border-goldChampagne/30 text-ivoryWarm placeholder-ivoryWarm/45 text-sm text-center focus:outline-none focus:border-goldChampagne transition-colors" />
+                </div>
+
+                <!-- Botón Principal WhatsApp -->
+                <a id="whatsapp-btn" href="https://wa.me/528441833479?text=confirmo%20mi%20asistencia" target="_blank" rel="noopener noreferrer"
+                   class="btn-whatsapp inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-base shadow-xl">
+                    <!-- Icono SVG de WhatsApp -->
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+                    </svg>
+                    <span>Confirmar Asistencia</span>
+                </a>
+                <p class="text-[11px] text-ivoryWarm/55 mt-3">
+                    Se enviará el mensaje: <span id="preview-wa-text" class="italic text-goldChampagne/90">"confirmo mi asistencia"</span>
+                </p>
+            </div>
+
+        </article>
+
+        <!-- Pie de página discreto -->
+        <footer class="mt-8 text-center text-xs text-ivoryWarm/50">
+            <p>Te esperamos para brindar juntos • Sábado 28 de Noviembre, 7:00 PM</p>
+        </footer>
+    </main>
+
+    <!-- =====================================================================
+         MODAL DE PERSONALIZACIÓN RÁPIDA PARA EL ANFITRIÓN
+    ====================================================================== -->
+    <div id="config-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl p-6 text-ivoryWarm relative">
+            <div class="flex items-center justify-between mb-4 border-b border-goldChampagne/20 pb-3">
+                <h3 class="font-serif text-2xl font-semibold text-goldChampagne">Personalizar Invitación</h3>
+                <button id="close-config-btn" class="p-1.5 rounded-lg hover:bg-white/10 text-ivoryWarm/70 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="config-form" class="space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-goldChampagne mb-1">Nombre de la Empresa / Lugar</label>
+                    <input type="text" id="cfg-brand" class="w-full px-3.5 py-2 rounded-xl bg-emeraldDeep border border-goldChampagne/30 text-ivoryWarm focus:outline-none focus:border-goldChampagne" />
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-goldChampagne mb-1">Dirección Escrita</label>
+                    <input type="text" id="cfg-address" class="w-full px-3.5 py-2 rounded-xl bg-emeraldDeep border border-goldChampagne/30 text-ivoryWarm focus:outline-none focus:border-goldChampagne" />
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-goldChampagne mb-1">Enlace de Google Maps</label>
+                    <input type="url" id="cfg-maps" placeholder="https://maps.app.goo.gl/..." class="w-full px-3.5 py-2 rounded-xl bg-emeraldDeep border border-goldChampagne/30 text-ivoryWarm focus:outline-none focus:border-goldChampagne" />
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-goldChampagne mb-1">Número de WhatsApp (con lada 52)</label>
+                    <input type="tel" id="cfg-whatsapp" placeholder="528441234567" class="w-full px-3.5 py-2 rounded-xl bg-emeraldDeep border border-goldChampagne/30 text-ivoryWarm focus:outline-none focus:border-goldChampagne" />
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button type="button" id="reset-config-btn" class="w-1/3 py-2.5 rounded-xl border border-goldChampagne/30 text-ivoryWarm/80 hover:bg-white/5 text-xs font-medium">
+                        Restaurar
+                    </button>
+                    <button type="submit" class="w-2/3 btn-gold py-2.5 rounded-xl font-semibold text-sm">
+                        Aplicar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts de Interactividad -->
+    <script>
+        // Inicializar iconos Lucide
+        lucide.createIcons();
+
+        // Estado actual de configuración (carga desde localStorage si el usuario editó algo)
+        let currentConfig = { ...DEFAULT_EVENT_CONFIG };
+        try {
+            const saved = localStorage.getItem('posada_inauguracion_cfg');
+            if (saved) {
+                currentConfig = { ...currentConfig, ...JSON.parse(saved) };
+            }
+        } catch (e) {
+            console.warn('No se pudo leer configuración previa:', e);
+        }
+
+        // Referencias del DOM
+        const displayBrand = document.getElementById('display-brand');
+        const displaySubtitle = document.getElementById('display-subtitle');
+        const displayAddress = document.getElementById('display-address');
+        const mapsBtn = document.getElementById('maps-btn');
+        const whatsappBtn = document.getElementById('whatsapp-btn');
+        const guestNameInput = document.getElementById('guest-name-input');
+        const previewWaText = document.getElementById('preview-wa-text');
+
+        // Función para actualizar el enlace de WhatsApp dinámicamente
+        function updateWhatsAppLink() {
+            const guestName = guestNameInput.value.trim();
+            const cleanPhone = currentConfig.whatsappNumber.replace(/\D/g, '');
+            const message = guestName
+                ? `${currentConfig.whatsappBaseMessage}, soy ${guestName}`
+                : currentConfig.whatsappBaseMessage;
+
+            previewWaText.textContent = `"${message}"`;
+            whatsappBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+        }
+
+        // Aplicar configuración visual a la página
+        function applyConfigToUI() {
+            displayBrand.textContent = currentConfig.brandName;
+            displaySubtitle.textContent = currentConfig.subtitle;
+            displayAddress.textContent = currentConfig.addressText;
+            mapsBtn.href = currentConfig.googleMapsUrl;
+            updateWhatsAppLink();
+        }
+
+        guestNameInput.addEventListener('input', updateWhatsAppLink);
+        applyConfigToUI();
+
+        // =====================================================================
+        // CUENTA REGRESIVA EN TIEMPO REAL: Sábado 28 de Noviembre 2026, 19:00 hrs
+        // =====================================================================
+        const targetDate = new Date('2026-11-28T19:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance <= 0) {
+                document.getElementById('countdown-label').textContent = "¡Hoy es el gran día! Te esperamos";
+                document.getElementById('cd-days').textContent = "00";
+                document.getElementById('cd-hours').textContent = "00";
+                document.getElementById('cd-minutes').textContent = "00";
+                document.getElementById('cd-seconds').textContent = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+            document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // =====================================================================
+        // MODAL DE PERSONALIZACIÓN RÁPIDA
+        // =====================================================================
+        const configModal = document.getElementById('config-modal');
+        const openConfigBtn = document.getElementById('open-config-btn');
+        const closeConfigBtn = document.getElementById('close-config-btn');
+        const resetConfigBtn = document.getElementById('reset-config-btn');
+        const configForm = document.getElementById('config-form');
+
+        openConfigBtn.addEventListener('click', () => {
+            document.getElementById('cfg-brand').value = currentConfig.brandName;
+            document.getElementById('cfg-address').value = currentConfig.addressText;
+            document.getElementById('cfg-maps').value = currentConfig.googleMapsUrl;
+            document.getElementById('cfg-whatsapp').value = currentConfig.whatsappNumber;
+            configModal.classList.remove('hidden');
+            configModal.classList.add('flex');
+        });
+
+        function closeModal() {
+            configModal.classList.add('hidden');
+            configModal.classList.remove('flex');
+        }
+
+        closeConfigBtn.addEventListener('click', closeModal);
+        configModal.addEventListener('click', (e) => {
+            if (e.target === configModal) closeModal();
+        });
+
+        configForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            currentConfig.brandName = document.getElementById('cfg-brand').value.trim() || DEFAULT_EVENT_CONFIG.brandName;
+            currentConfig.addressText = document.getElementById('cfg-address').value.trim() || DEFAULT_EVENT_CONFIG.addressText;
+            currentConfig.googleMapsUrl = document.getElementById('cfg-maps').value.trim() || DEFAULT_EVENT_CONFIG.googleMapsUrl;
+            currentConfig.whatsappNumber = document.getElementById('cfg-whatsapp').value.trim() || DEFAULT_EVENT_CONFIG.whatsappNumber;
+
+            try {
+                localStorage.setItem('posada_inauguracion_cfg', JSON.stringify(currentConfig));
+            } catch (err) {}
+
+            applyConfigToUI();
+            closeModal();
+        });
+
+        resetConfigBtn.addEventListener('click', () => {
+            currentConfig = { ...DEFAULT_EVENT_CONFIG };
+            try {
+                localStorage.removeItem('posada_inauguracion_cfg');
+            } catch (err) {}
+            applyConfigToUI();
+            closeModal();
+        });
+
+        // =====================================================================
+        // PARTÍCULAS DORADAS FLOTANTES (EFECTO FESTIVO SUTIL)
+        // =====================================================================
+        const canvas = document.getElementById('sparkle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createParticles() {
+            const count = window.innerWidth < 640 ? 28 : 50;
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2.2 + 0.6,
+                    speedY: Math.random() * 0.35 + 0.1,
+                    speedX: (Math.random() - 0.5) * 0.25,
+                    alpha: Math.random() * 0.6 + 0.2,
+                    pulse: Math.random() * 0.02 + 0.005
+                });
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let p of particles) {
+                p.y -= p.speedY;
+                p.x += p.speedX;
+                p.alpha += p.pulse;
+                if (p.alpha > 0.85 || p.alpha < 0.15) p.pulse *= -1;
+
+                if (p.y < -10) {
+                    p.y = canvas.height + 10;
+                    p.x = Math.random() * canvas.width;
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(229, 193, 123, ${p.alpha})`;
+                ctx.fill();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.onload = function () {
+            createParticles();
+            animateParticles();
+        };
+    </script>
+</body>
+</html>
